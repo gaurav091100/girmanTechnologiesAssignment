@@ -1,7 +1,8 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import menuIcon from "../../assets/menu.svg";
 import { useEffect, useState } from "react";
+import SearchBox from "../searchbox/SearchBox";
 
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
@@ -11,13 +12,6 @@ const Header = () => {
   const query = queryParams.get("q");
 
   const isSearchPage = location.pathname === "/search-results";
-
-  const navigate = useNavigate();
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    navigate(`/search-results?q=${searchValue}`);
-  };
 
   useEffect(() => {
     setSearchValue(query);
@@ -37,18 +31,12 @@ const Header = () => {
           <img src={menuIcon} alt="menu-icon" className="h-full w-full" />
         </button>
         {isSearchPage && (
-          <form
-            onSubmit={handleSearch}
-            className="hidden lg:flex items-center gap-4 border border-[#D7D7EA] w-full rounded-[12px] bg-white p-3"
-          >
-            <input
-              type="text"
-              placeholder="Search"
-              className="w-full outline-none"
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
+          <div className="hidden lg:block">
+            <SearchBox
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
             />
-          </form>
+          </div>
         )}
         <ul
           className={`absolute lg:static top-[29px] right-0 shadow-2xl lg:shadow-none ${

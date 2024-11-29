@@ -1,47 +1,39 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import SearchResultCard from "../components/searchResultCard/SearchResultCard";
-import searchIcon from "../assets/search-icon.svg";
 import NoResult from "../components/NoResult/NoResult";
+import SearchBox from "../components/searchbox/SearchBox";
 const SearchResults = () => {
-  const location = useLocation(); 
-  const queryParams = new URLSearchParams(location.search); 
-  const query = queryParams.get("q"); 
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const query = queryParams.get("q");
   const [searchValue, setSearchValue] = useState("");
-
-  const [contacts, setContacts] = useState([]);
-  const [filteredContacts, setFilteredContacts] = useState([]);
-
-  const navigate = useNavigate(); 
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    navigate(`/search-results?q=${searchValue}`);
-  };
+  const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
 
   useEffect(() => {
-    fetch("/users.json") 
+    fetch("/users.json")
       .then((response) => response.json())
       .then((data) => {
-        setContacts(data);
+        setUsers(data);
       })
-      .catch((error) => console.error("Error loading contacts data:", error));
+      .catch((error) => console.error("Error loading users data:", error));
   }, []);
 
   useEffect(() => {
     if (query) {
-      const filtered = contacts.filter(
-        (contact) =>
-          contact.first_name.toLowerCase().includes(query.toLowerCase()) ||
-          contact.last_name.toLowerCase().includes(query.toLowerCase()) ||
-          contact.city.toLowerCase().includes(query.toLowerCase()) ||
-          contact.contact_number.includes(query)
+      const filtered = users.filter(
+        (user) =>
+          user.first_name.toLowerCase().includes(query.toLowerCase()) ||
+        user.last_name.toLowerCase().includes(query.toLowerCase()) ||
+        user.city.toLowerCase().includes(query.toLowerCase()) ||
+        user.contact_number.includes(query)
       );
-      setFilteredContacts(filtered);
+      setFilteredUsers(filtered);
     } else {
-      setFilteredContacts(contacts);
+      setFilteredUsers(users);
     }
-  }, [query, contacts]);
+  }, [query, users]);
 
   useEffect(() => {
     setSearchValue(query);
@@ -49,36 +41,25 @@ const SearchResults = () => {
 
   return (
     <div
-      className={`pt-${filteredContacts.length === 0 ? "0" : "[37px]"} lg:pt-${filteredContacts.length === 0 ? "0" : "[50px]"} min-h-[calc(100vh-67.55px)] lg:min-h-[calc(100vh-111.03px)] px-[50px] lg:px-0`}
+      className={`pt-[37px] lg:pt-${
+        filteredUsers.length === 0 ? "0" : "[50px]"
+      } min-h-[calc(100vh-67.55px)] lg:min-h-[calc(100vh-111.03px)] px-[50px] lg:px-0`}
       style={{
         background: "linear-gradient(180deg, #F4F4F5 0%, #D9E6FF 100%)",
       }}
     >
-      <form
-        onSubmit={handleSearch}
-        className="flex lg:hidden items-center gap-4 border border-[#D7D7EA] w-full rounded-[12px] bg-white"
-      >
-        <div className="pl-3">
-          <img src={searchIcon} alt="search-icon" height={16} width={16} />
-        </div>
+      <div className="lg:hidden">
+        <SearchBox searchValue={searchValue} setSearchValue={setSearchValue} />
+      </div>
 
-        <input
-          type="text"
-          placeholder="Search"
-          value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
-          className="w-full p-3 pl-0 rounded-r-[12px] outline-none"
-        />
-      </form>
-
-      {filteredContacts.length > 0 ? (
+      {filteredUsers.length > 0 ? (
         <div className="grid grid-cols-1  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3  gap-[24.07px] lg:gap-[27px] w-full lg:w-[65vw] mt-[15px] lg:m-auto">
-          {filteredContacts.map((user, index) => (
+          {filteredUsers.map((user, index) => (
             <SearchResultCard key={index} user={user} />
           ))}
         </div>
       ) : (
-       <NoResult />
+        <NoResult />
       )}
     </div>
   );
