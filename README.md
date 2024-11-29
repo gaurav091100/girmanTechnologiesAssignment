@@ -1,4 +1,4 @@
-Frontend Deployed Link :- https://vrv-security-s-frontend-developer-intern-assignment-two.vercel.app/
+Frontend Deployed Link :- https://girman-technologies-assignment-rho.vercel.app/
 
 
 # Web Application (Frontend Assignment)
