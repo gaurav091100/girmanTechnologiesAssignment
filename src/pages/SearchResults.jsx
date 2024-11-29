@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import SearchResultCard from "../components/searchResultCard/SearchResultCard";
 import searchIcon from "../assets/search-icon.svg";
+import NoResult from "../components/NoResult/NoResult";
 const SearchResults = () => {
   const location = useLocation(); 
   const queryParams = new URLSearchParams(location.search); 
@@ -48,7 +49,7 @@ const SearchResults = () => {
 
   return (
     <div
-      className="pt-[37px] lg:pt-[50px] min-h-[calc(100vh-86.71px)] px-[50px] lg:px-0"
+      className={`pt-${filteredContacts.length === 0 ? "0" : "[37px]"} lg:pt-${filteredContacts.length === 0 ? "0" : "[50px]"} min-h-[calc(100vh-67.55px)] lg:min-h-[calc(100vh-111.03px)] px-[50px] lg:px-0`}
       style={{
         background: "linear-gradient(180deg, #F4F4F5 0%, #D9E6FF 100%)",
       }}
@@ -77,7 +78,7 @@ const SearchResults = () => {
           ))}
         </div>
       ) : (
-        <p>No results found</p>
+       <NoResult />
       )}
     </div>
   );

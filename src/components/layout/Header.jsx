@@ -23,7 +23,7 @@ const Header = () => {
     setSearchValue(query);
   }, [query]);
   return (
-    <header className="flex justify-between items-center shadow-md py-[18.58px] lg:py-[24.39px] px-[30.65px] lg:px-[283.9px] sticky top-0 left-0 z-10">
+    <header className="flex justify-between items-center shadow-md py-[18.58px] lg:py-[24.39px] px-[30.65px] lg:px-[283.9px] sticky top-0 left-0 z-10 bg-white">
       <Link to="/">
         <div className="w-[102.7px] h-[28.84px] lg:w-[220.91px] lg:h-[62.26px]">
           <img src={logo} alt="logo" className="w-full h-auto" />
@@ -44,7 +44,7 @@ const Header = () => {
             <input
               type="text"
               placeholder="Search"
-              className="w-full"
+              className="w-full outline-none"
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
             />
